@@ -16,6 +16,7 @@ import {
   FileText,
   User,
   Hash,
+  Phone,
   CheckCircle2,
   AlertCircle,
   Loader2,
@@ -35,6 +36,7 @@ export default function SellPage() {
   const [description, setDescription] = useState('');
   const [fullName, setFullName] = useState('');
   const [rollNumber, setRollNumber] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
 
   // Image Upload State
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -87,6 +89,10 @@ export default function SellPage() {
     }
     if (!rollNumber.trim()) {
       setErrorMessage('Please enter your BCA roll number (e.g., 23BCA019).');
+      return;
+    }
+    if (!mobileNumber.trim() || !/^[6-9]\d{9}$/.test(mobileNumber.trim())) {
+      setErrorMessage('Please enter a valid 10-digit Indian mobile number.');
       return;
     }
 
@@ -149,6 +155,7 @@ export default function SellPage() {
             id: profileId,
             full_name: fullName.trim(),
             roll_number: rollNumber.trim().toUpperCase(),
+            mobile_number: mobileNumber.trim(),
           })
           .select('id')
           .single();
@@ -467,6 +474,33 @@ export default function SellPage() {
                       />
                     </div>
                   </div>
+                </div>
+
+                {/* Mobile Number */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    WhatsApp Mobile Number <span className="text-indigo-600">*</span>
+                  </label>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <span className="absolute inset-y-0 left-9 flex items-center text-slate-500 text-sm font-bold pointer-events-none">
+                      +91
+                    </span>
+                    <input
+                      type="tel"
+                      value={mobileNumber}
+                      onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                      placeholder="98XXXXXXXX"
+                      maxLength={10}
+                      className="w-full pl-16 pr-4 py-3 text-sm bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all font-semibold tracking-widest"
+                      required
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-1.5 ml-1">
+                    📲 Buyers will contact you directly on this WhatsApp number.
+                  </p>
                 </div>
               </div>
 

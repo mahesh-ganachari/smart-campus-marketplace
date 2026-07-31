@@ -4,6 +4,7 @@ export interface Profile {
   id: string;
   full_name: string;
   roll_number: string;
+  mobile_number?: string | null;
   created_at: string;
 }
 

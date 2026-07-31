@@ -40,6 +40,7 @@ export default function Home() {
             id,
             full_name,
             roll_number,
+            mobile_number,
             created_at
           )
         `)
@@ -66,6 +67,7 @@ export default function Home() {
                   id: sellerObj.id,
                   full_name: sellerObj.full_name || 'Campus Student',
                   roll_number: sellerObj.roll_number || 'BCA',
+                  mobile_number: sellerObj.mobile_number || null,
                   created_at: sellerObj.created_at || item.created_at,
                 }
               : undefined,
