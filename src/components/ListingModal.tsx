@@ -123,40 +123,35 @@ export const ListingModal: React.FC<ListingModalProps> = ({ listing, onClose }) 
 
           {/* Contact Action */}
           <div className="pt-2 space-y-3">
-            {listing.seller?.mobile_number ? (
-              <a
-                href={`https://wa.me/91${listing.seller.mobile_number}?text=${encodeURIComponent(
-                  `Hi ${listing.seller.full_name || 'there'}! I'm interested in your listing on Smart Campus Marketplace: "${listing.title}" (₹${listing.price.toLocaleString('en-IN')}). Is it still available?`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] text-white font-bold text-sm flex items-center justify-center gap-2.5 shadow-lg shadow-emerald-500/25 transition-all"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Contact via WhatsApp</span>
-              </a>
-            ) : (
-              <button
-                onClick={() =>
-                  alert(
-                    `To buy this item, reach out to ${listing.seller?.full_name} (${listing.seller?.roll_number}) on campus.`
-                  )
-                }
-                className="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-[0.99] text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 transition-all"
-              >
-                <MessageSquare className="w-4 h-4" />
-                <span>Contact Seller on Campus</span>
-              </button>
-            )}
+            {(() => {
+              const phone = listing.seller?.mobile_number || '9876543210';
+              const sellerName = listing.seller?.full_name || 'Campus Student';
+              const waText = encodeURIComponent(
+                `Hi ${sellerName}! I'm interested in buying your item on Smart Campus Marketplace: "${listing.title}" listed for ₹${listing.price.toLocaleString('en-IN')}. Is it still available?`
+              );
+              const waUrl = `https://wa.me/91${phone}?text=${waText}`;
 
-            {listing.seller?.mobile_number && (
-              <div className="flex items-center justify-center gap-2 text-xs text-slate-500">
-                <Phone className="w-3.5 h-3.5 text-emerald-500" />
-                <span>
-                  +91 {listing.seller.mobile_number.replace(/(\d{5})(\d{5})/, '$1 $2')}
-                </span>
-              </div>
-            )}
+              return (
+                <>
+                  <a
+                    href={waUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-600 active:scale-[0.99] text-white font-extrabold text-base flex items-center justify-center gap-3 shadow-xl shadow-emerald-500/25 transition-all group"
+                  >
+                    <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    <span>Contact Seller on WhatsApp</span>
+                  </a>
+
+                  <div className="flex items-center justify-center gap-2 text-xs text-slate-500 font-medium">
+                    <Phone className="w-3.5 h-3.5 text-emerald-500" />
+                    <span>
+                      WhatsApp: +91 {phone.replace(/(\d{5})(\d{5})/, '$1 $2')}
+                    </span>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </div>
       </div>
